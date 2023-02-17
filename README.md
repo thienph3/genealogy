@@ -48,6 +48,8 @@ flask --app src run
 
 ```
 pytest tests\resources\family_resource.py
+pytest tests\resources\person_resource.py
+pytest tests\resources\relationship_type_resource.py
 ```
 
 ## Contributors
