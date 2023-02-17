@@ -1,14 +1,14 @@
-from src import api
 from flask import request
 from flask_restx import reqparse, marshal
 
 
-from src.apis.base_resource import BaseResource
+from src.resources import api
+from src.resources.base_resource import BaseResource
 from src.models.person import Person
+from src.view_models.simple_person import simple_person_model
 from src.view_models.person import person_model
 
 
-@api.route("/api/person")
 class PersonResource(BaseResource):
     @api.param("id", "If set, get only 1 person. If not set, get many persons.")
     @api.param("limit", "max number of persons.")
@@ -41,7 +41,7 @@ class PersonResource(BaseResource):
         total = Person.query.count()
         return self.succeed({"data": marshal(persons, person_model), "total": total})
 
-    @api.expect(person_model)
+    @api.expect(simple_person_model)
     @api.response(200, "Succeed")
     @api.response(400, "Bad Request")
     def post(self):
@@ -61,7 +61,7 @@ class PersonResource(BaseResource):
         Person.session.commit()
         return self.succeed(marshal(person, person_model))
 
-    @api.expect(person_model)
+    @api.expect(simple_person_model)
     @api.response(200, "Succeed")
     @api.response(400, "Bad Request")
     @api.response(404, "Not found")
